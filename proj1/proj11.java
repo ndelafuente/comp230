@@ -1,5 +1,5 @@
 /**
- * proj12.java
+ * proj11.java
  * 
  * This program takes in a string and a list of values. It then usees each of those 
  * values to encrypt and decode the string that was inputed.
