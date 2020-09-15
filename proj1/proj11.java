@@ -6,21 +6,23 @@ public class proj11{
     public static int numberOfKeyValues;
 
     public static void main(String[] args) {
-        Scanner scanInts = new Scanner(System.in);
-        Scanner scanStr = new Scanner(System.in);
-        Scanner scanQuit = new Scanner(System.in);
+        Scanner scan = new Scanner(System.in);
+		// TODO: Ignore case and input validation
         String runProgram = "y";
-        while(runProgram.charAt(0) == 'y'){
+        while(runProgram.equalsIgnoreCase("y")){
+			// TODO: try to base the num of key values off of the user inpue
             System.out.println("Enter the number of values you wish to use.");
             numberOfKeyValues = scanInts.nextInt();
             keyValues = new int[numberOfKeyValues];
             System.out.println("Enter individual values sepereated by spaces.");
 
-            int i = 0;
-            while(i < numberOfKeyValues) {
+            int 
+            while(scanInts.hasNextInt()) {
                 keyValues [i] = scanInts.nextInt();
                 i++;
             }
+			// Discard the newline
+			String trash = scan.nextLine();
 
             System.out.println("Enter the message you wish to encrypt:");
             String phrase =  scanStr.nextLine();
@@ -35,9 +37,6 @@ public class proj11{
             runProgram =  scanQuit.nextLine();
 
         }
-        scanQuit.close();
-        scanInts.close();
-        scanStr.close();
     }
 
     public static String encrypt(String phrase){

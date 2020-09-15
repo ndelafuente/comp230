@@ -32,6 +32,7 @@ public class proj12 {
                     inStream = new BufferedReader(new FileReader(inFilename));
                     outStream = new BufferedWriter(new FileWriter(outFilename));
                     
+					//TODO: Clean up this code (nextLine is unnecessary)
                     // Read each line until the end of the file
                     String line = inStream.readLine();
                     while (line != null) {
