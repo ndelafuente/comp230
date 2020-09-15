@@ -15,14 +15,20 @@ public class ComputeAreaAndPerimeter {
      * @param args The command line arguments ‐‐ not used
      */
     public static void main(String args[]) {
-        Shape myShape;
-        double perimeter;
-        double area;
-        myShape = getShape(); // Ask for figure type
-        myShape.readShapeData(); // Read the shape data
-        perimeter = myShape.computePerimeter(); // Compute perimeter
-        area = myShape.computeArea(); // Compute the area
-        displayResult(myShape, area, perimeter); // Display the result
+        char run = 'y';
+        Scanner in = new Scanner(System.in);
+        while(run == 'y'){
+            Shape myShape;
+            double perimeter;
+            double area;
+            myShape = getShape(); // Ask for figure type
+            myShape.readShapeData(); // Read the shape data
+            perimeter = myShape.computePerimeter(); // Compute perimeter
+            area = myShape.computeArea(); // Compute the area
+            displayResult(myShape, area, perimeter); // Display the result
+            System.out.println("Would you like to run the progrm again? y/n");
+            run = in.nextLine().charAt(0);
+        }
         System.exit(0); // Exit the program
     }
     /**
@@ -33,15 +39,15 @@ public class ComputeAreaAndPerimeter {
         Scanner in = new Scanner(System.in);
         System.out.println("Enter C for Circle");
         System.out.println("Enter R for Rectangle");
-        System.out.println("Enter R for Right Triangle");
+        System.out.println("Enter T for Right Triangle");
         String figType = in.next();
-        if (figType.equalsIgnoreCase("c") {
+        if (figType.equalsIgnoreCase("c")) {
             return new Circle();
         }
-        else if (figType.equalsIgnoreCase("r") {
+        else if (figType.equalsIgnoreCase("r")) {
             return new Rectangle();
         }
-        else if (figType.equalsIgnoreCase("t") {
+        else if (figType.equalsIgnoreCase("t")) {
             return new RtTriangle();
         }
         else {

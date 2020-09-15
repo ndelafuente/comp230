@@ -39,15 +39,15 @@ public class RtTriangle extends Shape{
       * @return the area of the right triangle
       */
     @Override
-    public double ComputeArea(){
-        return .5 * base * height;
+    public double computeArea(){
+        return (base * height)/2;
     }
 
     /**Computes the perimeter
       * @return the perimeter of the right triangle
       */
     @Override
-    public double ComputePerimeter(){
+    public double computePerimeter(){
         double hypo = (base*base) + (height* height);
         return Math.sqrt(hypo)+base+height;
       }

@@ -48,7 +48,6 @@ public class Circle extends Shape {
         Scanner in = new Scanner(System.in);
         System.out.println("Enter the radius of the Circle");
         radius = in.nextDouble();
-        in.close();
     }
 
     @Override
