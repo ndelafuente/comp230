@@ -26,7 +26,7 @@ public class ComputeAreaAndPerimeter {
             perimeter = myShape.computePerimeter(); // Compute perimeter
             area = myShape.computeArea(); // Compute the area
             displayResult(myShape, area, perimeter); // Display the result
-            System.out.println("Would you like to run the progrm again? y/n");
+            System.out.println("Would you like to run the program again? y/n");
             run = in.nextLine().charAt(0);
         }
         System.exit(0); // Exit the program

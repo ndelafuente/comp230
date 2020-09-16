@@ -1,0 +1,53 @@
+Script started on Tue Sep 15 17:06:54 2020
+[1m[7m%[27m[1m[0m                                                                                ]7;file://Nicos-MacBook-Air.local/Users/nicolasdelafuente/Documents/Computer%20Science/comp230/lab5[0m[27m[24m[Jnicolasdelafuente@Nicos-MacBook-Air lab5 % [K[?2004hjjava ComputeAreaAndPerimeter. [?2004l
+Enter C for Circle
+Enter R for Rectangle
+Enter T for Right Triangle
+c
+Enter the radius of the Circle
+4
+Shape is a Circle: radius is 4.0
+The area is 50.27
+The perimeter is 25.13
+Would you like to run the program again? y/n
+y
+Enter C for Circle
+Enter R for Rectangle
+Enter T for Right Triangle
+C
+Enter the radius of the Circle
+0
+Shape is a Circle: radius is 0.0
+The area is 0.00
+The perimeter is 0.00
+Would you like to run the program again? y/n
+y
+Enter C for Circle
+Enter R for Rectangle
+Enter T for Right Triangle
+R
+Enter the width of the Rectangle
+3
+Enter the height of the Rectangle
+4
+Shape is a Rectangle: width is 3.0, height is 4.0
+The area is 12.00
+The perimeter is 14.00
+Would you like to run the program again? y/n
+y
+Enter C for Circle
+Enter R for Rectangle
+Enter T for Right Triangle
+t
+Enter the base of the right triangle
+3
+Enter the height of the right triangle
+4
+Shape is a RtTriangle: base is 3.0, height is 4.0
+The area is 6.00
+The perimeter is 12.00
+Would you like to run the program again? y/n
+n
+[1m[7m%[27m[1m[0m                                                                                ]7;file://Nicos-MacBook-Air.local/Users/nicolasdelafuente/Documents/Computer%20Science/comp230/lab5[0m[27m[24m[Jnicolasdelafuente@Nicos-MacBook-Air lab5 % [K[?2004h[?2004l
+
+Script done on Tue Sep 15 17:07:26 2020
