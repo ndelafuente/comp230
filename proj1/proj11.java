@@ -88,11 +88,9 @@ public class proj11 {
         int numberOfKeyValues = 0;
         for (int i = 0, len = line.length(); i < len; i++) {
             char c = line.charAt(i);
-            System.out.print(c);
             if (c >= '0' && c <= '9' || c == '-' ) // valid integer character
                 numStr += c;
             if (c == ' '|| i == len - 1) {
-                System.out.println("this ");
                 // If there is a valid key, add it to the array
                 if (numStr.length() > 0) {
                     keyValues[numberOfKeyValues] = Integer.valueOf(numStr);
@@ -105,10 +103,6 @@ public class proj11 {
                 return -1;
             }
         }
-        // if (numStr.length() > 0) {
-        //     keyValues[numberOfKeyValues] = Integer.valueOf(numStr);
-        //     numberOfKeyValues++;
-        // }
         return numberOfKeyValues;
     }
 
