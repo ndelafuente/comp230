@@ -1,0 +1,47 @@
+Script started on Thu 17 Sep 2020 11:19:05 PM PDT
+]0;ndelafuente@bec307dl19:~/comp230/proj1[?1034h[38;5;39mndelafuente(B[m[38;5;15m@(B[m[38;5;136mbec307dl19(B[m[38;5;15m (B[m[38;5;2mproj1(B[m[38;5;15m>(B[m java por[K[Kroj12
+Enter the input file name: myNums.in        yNums.in
+Enter the output file name: myNums.out
+
+Successfully removed duplicates from 'myNums.in'!
+Updated file can be found in 'myNums.out'
+
+Do you want to run the program again (y/n): y
+Enter the input file name: Faulty      faultyNums.in
+Enter the output file name: faultyNums.out
+Error reading file. Invalid input: For input string: "dradsf"
+Please fix the file before trying again.
+]0;ndelafuente@bec307dl19:~/comp230/proj1[38;5;39mndelafuente(B[m[38;5;15m@(B[m[38;5;136mbec307dl19(B[m[38;5;15m (B[m[38;5;2mproj1(B[m[38;5;15m>(B[m e[Kcat myNums.in
+1
+2
+4
+6
+6
+8
+10
+11
+12
+14
+14
+26
+29
+49
+78
+]0;ndelafuente@bec307dl19:~/comp230/proj1[38;5;39mndelafuente(B[m[38;5;15m@(B[m[38;5;136mbec307dl19(B[m[38;5;15m (B[m[38;5;2mproj1(B[m[38;5;15m>(B[m cat myNums.out [K
+1
+2
+4
+6
+8
+10
+11
+12
+14
+26
+29
+49
+78
+]0;ndelafuente@bec307dl19:~/comp230/proj1[38;5;39mndelafuente(B[m[38;5;15m@(B[m[38;5;136mbec307dl19(B[m[38;5;15m (B[m[38;5;2mproj1(B[m[38;5;15m>(B[m exit
+exit
+
+Script done on Thu 17 Sep 2020 11:20:21 PM PDT
