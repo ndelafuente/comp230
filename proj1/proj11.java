@@ -88,9 +88,11 @@ public class proj11 {
         int numberOfKeyValues = 0;
         for (int i = 0, len = line.length(); i < len; i++) {
             char c = line.charAt(i);
-            if (c >= '0' && c <= '9' || c == '-') // valid integer character
+            System.out.print(c);
+            if (c >= '0' && c <= '9' || c == '-' ) // valid integer character
                 numStr += c;
-            else if (c == ' ' || i == len - 1) {
+            if (c == ' '|| i == len - 1) {
+                System.out.println("this ");
                 // If there is a valid key, add it to the array
                 if (numStr.length() > 0) {
                     keyValues[numberOfKeyValues] = Integer.valueOf(numStr);
@@ -98,7 +100,7 @@ public class proj11 {
                 }
                 numStr = ""; // reset the value
             }
-            else {
+            if ( !((c >= '0' && c <= '9') || c == '-' || c == ' ') ) {
                 System.out.printf("\nInvalid input (%c). Key values must be whole numbers\n\n", c);
                 return -1;
             }
