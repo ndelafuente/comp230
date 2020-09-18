@@ -12,33 +12,24 @@ import java.io.*;
 import java.util.Scanner;
 
 public class proj12 {
+	public static Scanner scan = new Scanner(System.in);
     public static BufferedReader inStream; // the input stream
     public static BufferedWriter outStream; // the output stream
 
     public static void main(String[] args) {
-        String running = "y"; // keep track of whether the user wants to run again
-        Scanner s = new Scanner(System.in);
-        while (running.equalsIgnoreCase("y")) {
-        	String inFilename, outFilename;
+		do {
         	try {
+				String inFilename, outFilename;
         		// Get the input and output file names
 	            System.out.print("Enter the input file name: ");
-    	        inFilename = s.nextLine();
+    	        inFilename = scan.nextLine();
         	    System.out.print("Enter the output file name: ");
-           		outFilename = s.nextLine();
-				System.out.println();
+           		outFilename = scan.nextLine();
 
 				// Get user input for a file, and remove the duplicate entries
             	removeDuplicates(inFilename, outFilename);
-
-				System.out.println("Successfully removed duplicates from '" + inFilename + "'!");
-				System.out.println("Updated data can be found in '" + outFilename + "'\n");
-
-          		// Prompt the user if they would like to run again
-				while ( !(running.equalsIgnoreCase("y") || running.equalsIgnoreCase("n")) ) {
-            		System.out.println("Do you want to run the program again y or n?");
-            		running =  s.nextLine();
-				}
+				System.out.println("\nSuccessfully removed duplicates from '" + inFilename + "'!");
+				System.out.println("Updated file can be found in '" + outFilename + "'\n");
 			}
 			catch (FileNotFoundException ex) {
 				System.out.println(ex.getMessage());
@@ -46,21 +37,17 @@ public class proj12 {
         	catch (EOFException ex) {
         		System.out.println(ex.getMessage());
         	}
-        	catch (NumberFormatException ex) {
-        		System.out.println("Error reading file: " + ex.getMessage());
-        	}
 			catch (IOException ex) {
            		ex.printStackTrace();
             	System.exit(1);
        		}
 
-        } // end while loop
+		} while (runAgain());
       	System.out.println("Goodbye!");
-        s.close();
-    } // end of main
+	}
 
 	public static void removeDuplicates(String inFilename, String outFilename) 
-			throws FileNotFoundException,  EOFException, NumberFormatException, IOException {
+			throws FileNotFoundException,  EOFException, IOException {
 		// Create the buffers from the file names
         inStream = new BufferedReader(new FileReader(inFilename));
         outStream = new BufferedWriter(new FileWriter(outFilename));
@@ -68,23 +55,48 @@ public class proj12 {
         // Read each line until the end of the file
         String line = inStream.readLine();
         while (line != null) {
-        	int num = Integer.valueOf(line); // throws exception if not an int
-						
-			// Write the number to the file
-        	outStream.write(Integer.toString(num) + '\n');
+			try {
+        		int num = Integer.valueOf(line); // throws exception if not an int
+			
+				// Write the number to the file
+				outStream.write(Integer.toString(num) + '\n');
 
-			// Read the next line
-        	String nextLine = inStream.readLine();
+				// Read the next line
+				String nextLine = inStream.readLine();
 
-        	// If the next number is a duplicate
-            if (Integer.valueOf(line) == Integer.valueOf(nextLine)) {
-            	// Skip to the line after it
-                line = inStream.readLine();
-            }
-			else
-				line = nextLine;
+				// If the next number is a duplicate
+				if (line.equals(nextLine)) {
+					// Skip to the line after it
+					line = inStream.readLine();
+				}
+				else
+					line = nextLine;
+			}
+        	catch (NumberFormatException ex) {
+				System.out.println("Error reading file. Invalid input: " + ex.getMessage());
+				System.out.println("Please fix the file before trying again.");
+				System.exit(0);
+			}
 		}
 		// Close the stream to save the changes to the file
         outStream.close();
 	}
+
+	/**
+     * Asks the user if they want to run the program again
+     * 
+     * @return true if they do, false if they do not
+     */
+    public static boolean runAgain() {
+		System.out.print("Do you want to run the program again (y/n): ");
+        String runProgram = scan.nextLine();
+        while ( !runProgram.equalsIgnoreCase("y") && !runProgram.equalsIgnoreCase("n") )
+        {
+			System.out.println("Invalid input.");
+            System.out.print("Do you want to run the program again (y/n): ");
+            runProgram =  scan.nextLine();
+        }
+
+        return runProgram.equalsIgnoreCase("y");
+    }
 }

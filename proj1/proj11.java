@@ -15,20 +15,19 @@ public class proj11 {
     public static final int MAX_NUMBER_OF_KEYS = 64;
 
     public static void main(String[] args) {
+        System.out.println("This program will encrypt your message using shifting key cipher");
         do {
-            System.out.println("This program will encrypt your message using shifting key cipher");
-
-            // Convert the the user input into a list of integer values
+            // Get the the keys from the user
             int keyValues[] = new int[MAX_NUMBER_OF_KEYS];
             int numberOfKeyValues = -1;
             while (numberOfKeyValues == -1)
                 numberOfKeyValues = scanKeys(keyValues);
 			
-            //returns the encrypted message
+            // Encrypt the message and print it out
             String encryptedPhrase = encrypt(keyValues, numberOfKeyValues);
             System.out.println("Your encrypted message is: "+ encryptedPhrase);
 
-            //returns the decrypted message
+            // Decrypt the message and print it out
             String decryptedPhrase = decrypt(encryptedPhrase, keyValues, numberOfKeyValues);
             System.out.println("Your decrypted message is: "+ decryptedPhrase);
         }
@@ -45,7 +44,7 @@ public class proj11 {
      */
     public static String encrypt(int keyValues[], int numberOfKeyValues){
         // Get the message to decrypt
-        System.out.print("Enter the message you wish to encrypt:");
+        System.out.print("Enter the message you wish to encrypt: ");
         String phrase = scan.nextLine();
 
         String encryptedMessage = "";
@@ -75,19 +74,28 @@ public class proj11 {
         return decryptedMessage;
     }
 
+    /**
+     * Get the cipher keys from the user
+     * 
+     * @param keyValues an array to store the keys
+     * @return the number of keys that were read, -1 if 
+     */
     public static int scanKeys(int keyValues[]) {
         System.out.println("Enter the individual keys separated by spaces.");
         String line = scan.nextLine();
-        
+
         String numStr = ""; // the string value of the key
         int numberOfKeyValues = 0;
-        for (int i = 0; i < line.length(); i++) {
+        for (int i = 0, len = line.length(); i < len; i++) {
             char c = line.charAt(i);
-            if (c >= '0' && c <= '9' || c == '-')
+            if (c >= '0' && c <= '9' || c == '-') // valid integer character
                 numStr += c;
-            else if (c == ' ') {
-                keyValues[numberOfKeyValues] = Integer.valueOf(numStr);
-                numberOfKeyValues++;
+            else if (c == ' ' || i == len - 1) {
+                // If there is a valid key, add it to the array
+                if (numStr.length() > 0) {
+                    keyValues[numberOfKeyValues] = Integer.valueOf(numStr);
+                    numberOfKeyValues++;
+                }
                 numStr = ""; // reset the value
             }
             else {
@@ -95,12 +103,10 @@ public class proj11 {
                 return -1;
             }
         }
-        try {
-            keyValues[numberOfKeyValues] = Integer.valueOf(numStr);
-        }
-        catch(NumberFormatException e) { e.getMessage(); }
-        numberOfKeyValues++;
-
+        // if (numStr.length() > 0) {
+        //     keyValues[numberOfKeyValues] = Integer.valueOf(numStr);
+        //     numberOfKeyValues++;
+        // }
         return numberOfKeyValues;
     }
 
