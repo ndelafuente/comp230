@@ -1,0 +1,8 @@
+Authors : Nicolas de la Fuente & Dillan Lopez
+
+The interger is: 1 the time(in nanoseconds) it took to run is: 2426.0 the sum is: 1
+The interger is: 2 the time(in nanoseconds) it took to run is: 1022.0 the sum is: 1
+The interger is: 4 the time(in nanoseconds) it took to run is: 1344.0 the sum is: 3
+The interger is: 8 the time(in nanoseconds) it took to run is: 5522.0 the sum is: 21
+The interger is: 16 the time(in nanoseconds) it took to run is: 326190.0 the sum is: 987
+The interger is: 32 the time(in nanoseconds) it took to run is: 1.7819493E7 the sum is: 2178309
