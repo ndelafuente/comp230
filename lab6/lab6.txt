@@ -1,0 +1,36 @@
+Nicolas de la Fuente
+Lab 6
+September 22, 2020
+
+The following tables list the average run times (of 10^6 executions) to find the nth number in the Fibonacci sequence.
+
+Iterative method
+n		run time (nano seconds)
+1		47.4074
+2		48.5251
+4		47.8144
+8		51.2319
+16		56.8322
+32		67.5884
+64		93.1236
+128		138.9312
+256		224.4886
+512		388.0508
+1024		724.6553
+2048		1428.5404
+4096		2807.1249
+Time complexity ≈ O(n)
+
+Recursive method
+n		run time (nano seconds)
+1		48.8817
+2		55.6231
+4		59.2011
+8		169.8679
+16		6395.8369
+32		12655846.6370
+Time complexity ≈ O(2^n)
+
+The iterative method is clearly linear from the data. An algorithm analysis of the iterative method supports this conclusion. There is a single loop that iterates n - 2 times and performs 3 simple statements.
+
+The recursive method is not as clear as the program took too long to run to obtain as many data points. The algorithm analysis led us to believe that the time complexity was exponential because at each call of the function the function is called twice. If we assume that T(n-1) ≈ T(n-2) then each call has a complexity of 2n. 

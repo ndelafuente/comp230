@@ -1,14 +1,17 @@
 //Authors : Nicolas de la Fuente & Dillan Lopez
 public class lab62{
     public static void main(String []args){
-        int outcome = 0;
-        for(int i = 1; i< 50; i*=2){
-            double startTime = System.nanoTime();
-            outcome = recursiveFib(i);
-            double timeElapsed = System.nanoTime()-startTime;
-            System.out.println("The interger is: " + i + " the time(in nanoseconds) it took to run is: " + 
-            timeElapsed + " the sum is: " + outcome);
-           
+        System.out.println("i\t\t\tavg run time");
+        for(int i = 1; i <= 32; i*=2){
+            double timeElapsed = 0;
+            int k;
+            for (k = 1; k <= 10000; k++) {
+                double startTime = System.nanoTime();
+                recursiveFib(i);
+                timeElapsed += System.nanoTime()-startTime;
+            }
+            timeElapsed /= k;
+            System.out.printf("%d\t\t\t%.4f\n", i, timeElapsed);
         }
     }
 
