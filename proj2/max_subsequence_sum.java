@@ -9,8 +9,8 @@ class max_subsequence_sum {
             while (numList == null) {
                 numList = readNums();
             }
-
-            test_mss_algorithms(numList);
+            System.out.println(algorithmRec(numList,0, numList.length));
+            //test_mss_algorithms(numList);
         } while (runAgain());
 
     }
@@ -87,24 +87,31 @@ class max_subsequence_sum {
             ¤ Compute maxLeftBoundSum and maxRightBoundSum
             ¤ Return max (maxLeftSum, maxRightSum, maxLeftBoundSum+maxRightBoundSum)
         */
+        int n = end - start;
+        int mid = (int) (n / 2);
 
-        int mid = (int) (arr.length / 2);
-
-        if (start > end) {
+        if (n <= 0) {
             return 0;
         }
         else {
             int maxLeftSum = algorithmRec(arr, start, mid);
             int maxRightSum = algorithmRec(arr, mid + 1, end);
             int maxLeftBoundSum = 0, maxRightBoundSum = 0;
-            // for (int i = mid; i < mid; i++) {
-            //     if (maxLeftBoundSum + arr[]) {
-            //         maxLeftBoundSum += arr[mid - i];
-            // for (int i = mid + 1; i < arr.length; i++) {
-            //     if (maxRightBound + arr[i])
-            // }
+            // int leftBoundSum = 0, rightBoundSum = 0;
+
+            // [a, b, c, d, e, f]
+            for (int j = 0; j < mid; j++) {
+                maxLeftBoundSum += arr[mid - j];
+                maxRightBoundSum += arr[mid + j];
+                // if (leftBoundSum > maxLeftBoundSum)
+                //     maxLeftBoundSum = leftBoundSum;
+    
+                // if (rightBoundSum > maxLeftBoundSum)
+                //     maxLeftBoundSum = leftBoundSum;
+            }
+
             return Math.max(Math.max(maxLeftSum, maxRightSum), 
-                    Math.max(maxLeftBoundSum, maxRightBoundSum));
+                    (maxLeftBoundSum + maxRightBoundSum));
         }
     }
 
