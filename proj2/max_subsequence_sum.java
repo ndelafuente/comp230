@@ -57,6 +57,7 @@ class max_subsequence_sum {
             for (int algo = 1; algo <= 4; algo++) {
                 long runTime = getRuntime(algo, arr, n);
                 outFile.printf("%d,", runTime);
+                totalRunTimes[algo-1] += runTime;
             }
         }
         outFile.close();
@@ -65,7 +66,7 @@ class max_subsequence_sum {
         System.out.printf("Average run times for n = %d\n", n);
         for (int algo = 0; algo < 4; algo++) {
             double averageRunTime = totalRunTimes[algo] / iter;
-            System.out.printf("Algorithm %d: %f\n", algo+1, averageRunTime);
+            System.out.printf("Algorithm %d: %.1f\n", algo+1, averageRunTime);
         }
         System.out.println("The full data set can be found in run_times.txt");
     }
@@ -89,7 +90,7 @@ class max_subsequence_sum {
                 algorithm2(arr);
                 break;
             case 3:
-                algorithm3(arr, 0, n);
+                algorithm3(arr, 0, n-1);
                 break;
             case 4:
                 algorithm4(arr);
