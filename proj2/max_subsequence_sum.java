@@ -1,41 +1,67 @@
 import java.util.Random;
 import java.util.Scanner;
 import java.util.StringTokenizer;
-import java.io.*;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+
 
 class max_subsequence_sum {
     public static void main(String[] args) {
-        try {
-            // Testing prototol
-            if (args.length == 3 && args[0].equals("-t")) {
-                int n = Integer.valueOf(args[1]);
-                int iter = Integer.valueOf(args[2]);
+        // Default usage
+        if (args.length == 0) {
+            System.out.println("\n\nWelcome to the MSS algorithm evaluator\n");
+            
+            // Propogate the sequence
+            int[] numList = getSequence();
+            while (true) {
+                int option = getOption2();
 
-                int testList[] = new int[n];
-                Random rand = new Random();
-                for (int len = 1; len <= n; len++) {
-                    testList[len] = rand.nextInt() % 201 + 100;
-                    test_mss_algorithms(testList, len, iter);
+                // Quit
+                if (option == 0) { break; }
+                // Test a specific algorithm
+                if (option <= 4) {
+                    System.out.printf("Testing algorithm %d with 100 iterations\n", option);
+                    testAlgorithm(numList, numList.length, 100, option);
+                }
+                // Test all 4 algorithms
+                else if (option == 5) {
+                    System.out.println("Testing each algorithm with 100 iterations");
+                    testAlgorithms(numList, numList.length, 100);
+                }
+                // Get a new sequence
+                else if (option == 6) { 
+                    numList = getSequence();
                 }
             }
-            // Default protocol
-            else if (args.length == 0) {
-                do {
-                    // Read in the list of numbers
-                    int[] numList = null;
-                    while (numList == null) {
-                        numList = readNums(); // returns null if there was an error
-                    }
-                    // Test each algorithm on the list
-                    System.out.println("Testing the algorithms with default 1000 iterations");
-                    test_mss_algorithms(numList, numList.length, 1000);
-
-                } while (runAgain());
-            }
-            else printUsage();
         }
-        catch (IOException ex) { ex.getMessage(); }
-        catch (NumberFormatException ex) { printUsage(); }
+        // Testing protocol
+        else if (args.length == 3 && args[0].equals("-t")) {
+            runTestingProtocol(args);
+        }
+        // Invalid usage
+        else printUsage();
+    }
+
+    /**
+     * Test the run time of a single algorithm
+     * 
+     * @param arr The sequence
+     * @param n The length of the sequence
+     * @param iter The number of iterations to average
+     * @param algoNum The number of the algorithm
+     */
+    public static void testAlgorithm(int arr[], int n, int iter, int algoNum) {
+        double totalRunTime = 0;
+        for (int i = 0; i < iter; i++) {
+            totalRunTime += getRuntime(algoNum, arr, n);
+        }
+        double averageRunTime = totalRunTime / (iter * 1E9);
+        System.out.printf("Average run time (seconds) for algorithm %d: %6.3e\n", algoNum, averageRunTime);
+
     }
 
     /**
@@ -44,31 +70,23 @@ class max_subsequence_sum {
      * @param arr The array to be tested on
      * @param n The length of the array
      * @param iter The number of iterations to perform
-     * @throws IOException
      */
-    public static void test_mss_algorithms(int arr[], int n, int iter) throws IOException {
-        PrintWriter outFile = new PrintWriter(new FileWriter("run_times.txt"));
-        outFile.println("n,i,algo1,algo2,algo3,algo4");
-        long totalRunTimes[] = {0, 0, 0, 0};
-
-        // Test the run time for each algorithm and write it to the output file
+    public static void testAlgorithms(int arr[], int n, int iter) {
+        double totalRunTimes[] = {0, 0, 0, 0};
+        // Test the run time for each algorithm
         for (int i = 0; i < iter; i++) {
-            outFile.printf("\n%d,%d,", n, i);
             for (int algo = 1; algo <= 4; algo++) {
                 long runTime = getRuntime(algo, arr, n);
-                outFile.printf("%d,", runTime);
                 totalRunTimes[algo-1] += runTime;
             }
         }
-        outFile.close();
-
+        
         // Calculate and print the average run time for each algorithm
-        System.out.printf("Average run times for n = %d\n", n);
+        System.out.printf("Average run times (seconds) for n = %d\n", n);
         for (int algo = 0; algo < 4; algo++) {
-            double averageRunTime = totalRunTimes[algo] / iter;
-            System.out.printf("Algorithm %d: %.1f\n", algo+1, averageRunTime);
+            double averageRunTime = totalRunTimes[algo] / (iter * 1E9);
+            System.out.printf("Algorithm %d: %6.3e\n", algo+1, averageRunTime);
         }
-        System.out.println("The full data set can be found in run_times.txt");
     }
 
     /**
@@ -243,6 +261,21 @@ class max_subsequence_sum {
         return maxSum;
     }
 
+    public static int[] getSequence() {
+        int numList[] = null;
+        int option = getOption1();
+        if (option == 0) {
+            // Read in the list of numbers
+            while (numList == null) {
+                numList = readNums(); // returns null if there was an error
+            }
+        }
+        else {
+            numList = randomizeNums(option, -100, 100);
+        }
+        return numList;
+    }
+
     /**
      * Read in a list of numbers from a file that is specified by the user
      * 
@@ -280,6 +313,98 @@ class max_subsequence_sum {
     }
 
     /**
+     * Create a randomized list of integers
+     * 
+     * @param n The length of the list
+     * @param min The minimum value for the integers
+     * @param max The maximum value for the integers
+     * @return The list
+     */
+    public static int[] randomizeNums(int n, int min, int max) {
+        int arr[] = new int[n];
+        Random rand = new Random();
+        for (int i = 0; i < n; i++) {
+            arr[i] = rand.nextInt() % (max - min + 1) + min;
+        }
+        return arr;
+    }
+
+    /**
+     * Get the user's choice for where to get the sequence from
+     * @return 0 for file input, or the length of the random sequence
+     */
+    public static int getOption1() {
+        System.out.println("\n           Sequence source menu          ");
+        System.out.println(" -- -- -- -- -- -- -- -- -- -- -- -- -- -- ");
+        System.out.println("| 1) Read in the sequence from a file     |");
+        System.out.println("| 2) Create a random sequence             |");
+        System.out.println(" -- -- -- -- -- -- -- -- -- -- -- -- -- -- ");
+
+        // Read in the option and ensure that it is valid
+        int option = getInput("Enter the number of your choice: ", 1, 2);
+        if (option == 1) return 0;
+        
+        System.out.println("The random integer values will range from -100 to 100");
+        return getInput("Enter the desired length of the sequence: ", 0, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Get the user's choice for which algorithms to run
+     * @return The user's choice
+     */
+    public static int getOption2() {
+        int OPT_MIN = 0, OPT_MAX = 6;
+        System.out.println("\n            Main Menu           ");
+        System.out.println(" -- -- -- -- -- -- -- -- -- -- -- ");
+        System.out.println("| 0) Quit                        |");
+        System.out.println("| 1) Test algorithm 1 O(n^3)     |");
+        System.out.println("| 2) Test algorithm 2 O(n^2)     |");
+        System.out.println("| 3) Test algorithm 3 O(nln(n))  |");
+        System.out.println("| 4) Test algorithm 4 O(n)       |");
+        System.out.println("| 5) Test all 4 algorithms       |");
+        System.out.println("| 6) Use a different sequence    |");
+        System.out.println(" -- -- -- -- -- -- -- -- -- -- -- ");
+
+        // Read in the option and ensure that it is valid
+        return getInput("Enter the number of your choice: ", OPT_MIN, OPT_MAX);
+    }
+
+    /**
+     * Get an integer input from the user, reprompt if outside of range
+     * 
+     * @param msg The prompt
+     * @param min The minimum input value
+     * @param max The maximum input value
+     * @return The input
+     */
+    public static int getInput(String msg, int min, int max) {
+        try {
+            Scanner scan = new Scanner(System.in);
+
+            // Get the input and eprompt the user if it is out of the range
+            int input = min - 1;
+            while (input < min || input > max) {
+                // Print the message
+                System.out.print(msg);
+
+                try {
+                    input = Integer.valueOf(scan.nextLine());
+                    if (input < min || input > max) { throw new NumberFormatException(); }
+                    System.out.println();
+                }
+                catch (NumberFormatException ex) {
+                    System.out.printf("Invalid input. Input must be an integer between %d and %d\n\n", min, max);
+                    input = min - 1;
+                }
+            }
+
+            return input;
+        }
+        catch (NumberFormatException ex) {
+            return min - 1;
+        }
+    }
+    /**
      * Asks the user if they want to run the program again
      * 
      * @return true if they do, false if they do not
@@ -302,9 +427,50 @@ class max_subsequence_sum {
     }
 
     /**
+     * Run the testing protocol
+     * @param args The arguments
+     */
+    public static void runTestingProtocol(String args[]) {
+        try {
+            int n = Integer.valueOf(args[1]);
+            int iter = Integer.valueOf(args[2]);
+
+            PrintWriter outFile = new PrintWriter(new FileWriter("run_times.txt"));
+
+            for (int len = 1; len <= n; len++) {
+                int testList[] = randomizeNums(len, -100, 100);
+
+            
+                // Test the run time for each algorithm and write it to the output file{
+                for (int i = 0; i < iter; i++) {
+                    outFile.printf("%d,%d,", len, i);
+                    for (int algo = 1; algo <= 4; algo++) {
+                        long runTime = getRuntime(algo, testList, len);
+                        if (algo < 4) outFile.printf("%d,", runTime);
+                        else outFile.printf("%d\n", runTime); 
+                    }
+                }
+                outFile.print('\n');
+            }
+            System.out.println("\nThe full data set can be found in run_times.txt");
+            System.out.println("The format is: n,i,algo1,algo2,algo3,algo4\n");
+
+            outFile.close();
+        }
+        catch (NumberFormatException ex) {
+            printUsage();
+        }
+        catch (IOException ex) {
+            System.out.println(ex.getMessage());
+            System.exit(1);
+        }
+    }
+
+    /**
      * Print the correct usage of the program
      */
     public static void printUsage() {
         System.out.println("Usage: java max_subsequence_sum [-t <n> <iterations>]");
+        System.exit(1);
     }
 }
