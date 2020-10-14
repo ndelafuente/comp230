@@ -442,16 +442,19 @@ class max_subsequence_sum {
 
             
                 // Test the run time for each algorithm and write it to the output file{
+                long totalRunTime[] = {0, 0, 0, 0};
                 for (int i = 0; i < iter; i++) {
-                    outFile.printf("%d,%d,", len, i);
                     for (int algo = 1; algo <= 4; algo++) {
-                        long runTime = getRuntime(algo, testList, len);
-                        if (algo < 4) outFile.printf("%d,", runTime);
-                        else outFile.printf("%d\n", runTime); 
+                        totalRunTime[algo - 1] += getRuntime(algo, testList, len);
                     }
                 }
-                outFile.print('\n');
-            }
+                outFile.printf("%d", len);
+                for (int algo = 0; algo < 4; algo++) {
+                    outFile.print(",");
+                    double avgRunTime = (double) totalRunTime[algo] / iter;
+                    outFile.printf("%.4f", avgRunTime);
+                }
+            }   
             System.out.println("\nThe full data set can be found in run_times.txt");
             System.out.println("The format is: n,i,algo1,algo2,algo3,algo4\n");
 
