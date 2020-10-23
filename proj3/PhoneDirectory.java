@@ -50,7 +50,7 @@ public class PhoneDirectory extends DirectoryEntry{
 
     }
 
-    public displayAllEntries(){
+    public void displayAllEntries() {
     // display all entries in a nice and readable format
         int len = theDirectory.size();
         for(int i = 0; i < len; i ++){
