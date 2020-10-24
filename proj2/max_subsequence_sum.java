@@ -454,6 +454,7 @@ class max_subsequence_sum {
                     double avgRunTime = (double) totalRunTime[algo] / iter;
                     outFile.printf("%.4f", avgRunTime);
                 }
+                outFile.print("\n");
             }   
             System.out.println("\nThe full data set can be found in run_times.txt");
             System.out.println("The format is: n,i,algo1,algo2,algo3,algo4\n");
