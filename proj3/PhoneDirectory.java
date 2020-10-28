@@ -2,10 +2,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PhoneDirectory extends DirectoryEntry {
-    private List<DirectoryEntry> theDirectory = new ArrayList<>();
+    private List<DirectoryEntry> theDirectory = new ArrayList<DirectoryEntry>();
 
     PhoneDirectory(String name, String number) {
         super(name,number);
+        addOrChangeEntry(this.name, this.number);
     }
 
 
@@ -19,7 +20,7 @@ public class PhoneDirectory extends DirectoryEntry {
             return dE;
         }
 
-        else{
+        else {
             theDirectory.add(new DirectoryEntry(name, number));
             return null;
         }
@@ -52,10 +53,8 @@ public class PhoneDirectory extends DirectoryEntry {
 
     public void displayAllEntries() {
     // display all entries in a nice and readable format
-        int len = theDirectory.size();
-        for(int i = 0; i < len; i ++){
-            System.out.println(theDirectory.get(i));
-        }
+        System.out.println("Size: " + theDirectory.size());
+        System.out.println(this.toString());
     }
 
     public String toString() {

@@ -12,14 +12,13 @@ class proj3 {
         System.out.println("\n\nWelcome to the Cool Phonebook Manager.\n");
         Scanner scan = new Scanner(System.in);
         
+        // Initialize an empty phone directory
+        PhoneDirectory phoneBook = new PhoneDirectory("name", "number");
+        String name = "", number = "", filename = "";
+        DirectoryEntry dE = null;
+        
         while (true) {
             int option = getOption(scan);
-
-            // Initialize an empty phone directory
-            PhoneDirectory phoneBook = new PhoneDirectory("", "");
-            String name = null, number = null, filename = null;
-            DirectoryEntry dE = null;
-
             switch (option) {
                 case 0:
                     return;

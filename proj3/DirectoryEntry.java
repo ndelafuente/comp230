@@ -2,10 +2,10 @@ public class DirectoryEntry {
     String number;
     String name;
     DirectoryEntry(String name, String number){
-        name = this.name;
-        number = this.number;
+        this.name = name;
+        this.number = number;
     }
     public String toString(){
-        return name.toString() + "," + number.toString();
+        return name + "," + number;
     }
 }
