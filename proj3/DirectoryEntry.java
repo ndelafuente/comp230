@@ -6,6 +6,6 @@ public class DirectoryEntry {
         number = this.number;
     }
     public String toString(){
-        return name.toString() + " "+ number.toString();
+        return name.toString() + "," + number.toString();
     }
 }

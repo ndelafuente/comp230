@@ -1,13 +1,13 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class PhoneDirectory extends DirectoryEntry{
+public class PhoneDirectory extends DirectoryEntry {
+    private List<DirectoryEntry> theDirectory = new ArrayList<>();
+
     PhoneDirectory(String name, String number) {
-        super(name, number);
-        // TODO Auto-generated constructor stub
+        super(name,number);
     }
 
-    private List<DirectoryEntry> theDirectory = new ArrayList<>();
 
     public DirectoryEntry addOrChangeEntry(String name, String number) {
     // add an entry to directory or change an existing entry; return the old number or null if it is a // new entry
@@ -56,6 +56,15 @@ public class PhoneDirectory extends DirectoryEntry{
         for(int i = 0; i < len; i ++){
             System.out.println(theDirectory.get(i));
         }
+    }
+
+    public String toString() {
+        int len = theDirectory.size();
+        String phoneBookStr = "";
+        for (int i = 0; i < len; i++) {
+            phoneBookStr += theDirectory.get(i).toString() + '\n';
+        }
+        return phoneBookStr;
     }
     
 }
