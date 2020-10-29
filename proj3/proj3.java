@@ -12,64 +12,96 @@ class proj3 {
         System.out.println("\n\nWelcome to the Cool Phonebook Manager.\n");
         Scanner scan = new Scanner(System.in);
         
-        // Initialize an empty phone directory
+        // Initialize the phone directory
         PhoneDirectory phoneBook = new PhoneDirectory("name", "number");
-        String name = "", number = "", filename = "";
-        DirectoryEntry dE = null;
         
+        // Continue running until the user chooses to exit
         while (true) {
             int option = getOption(scan);
-            switch (option) {
-                case 0:
-                    return;
-                case 1:
-                    // Read in the file name
-                    System.out.print("Please enter the input file name: ");
-                    filename = scan.nextLine();
-                    phoneBook = readFile(filename);
-                    break;
-                case 2: // Add or change an entry in the directory
-                    System.out.print("Enter the name: ");
-                    name = scan.nextLine();
-                    System.out.print("Enter the number: ");
-                    number = scan.nextLine();
+            
+            doOption(phoneBook, scan, option);
+        }
+    }
 
-                    dE = phoneBook.addOrChangeEntry(name, number);
-                    if (dE == null)
-                        System.out.println("New entry added!");
-                    else
-                        System.out.printf("Existing entry <%s> was overwritten.\n", dE.toString());
-                    break;
-                case 3: // Remove an entry by name
-                    System.out.print("Enter the name: ");
-                    name = scan.nextLine();
-                    phoneBook.removeEntry(name);
-                    break;
-                case 4: // Search for a entry by name
-                    System.out.print("Enter the name: ");
-                    name = scan.nextLine();
-                    dE = phoneBook.searchEntry(name);
-                    
-                    if (dE != null)
-                        System.out.printf("An entry was found <%s>\n", dE.toString());
-                    else
-                        System.out.printf("No entry with the name (%s) was found.\n", name);
-                    break;
-                case 5: // Display all directory entries
-                    phoneBook.displayAllEntries();
-                    break;
-                case 6: // Save to file
-                    try {
-                        System.out.print("Enter the filename: ");
-                        filename = scan.nextLine();
-                        PrintWriter writer = new PrintWriter(new FileWriter(filename));
-                        writer.print(phoneBook.toString());
-                        writer.close();
-                    }
-                    catch (IOException ex) {
-                        System.out.println(ex.getMessage());
-                    }
-            }
+    /**
+     * Perform the option that the user chose
+     * 
+     * @param phoneBook The phonebook
+     * @param scan The scanner to take in user input if necessary
+     * @param option The menu option (0-6)
+     */
+    public static void doOption(PhoneDirectory phoneBook, Scanner scan, int option) {
+        // Local variables
+        String name = "", number = "", filename = "";
+        DirectoryEntry dE = null;
+        PhoneDirectory pB = null;
+
+        switch (option) {
+            case 0: // Quit
+                System.out.println("Thank you for using the Cool Phonebook Manager");
+                System.exit(0);;
+
+            case 1:
+                // Read in the file name
+                System.out.print("Please enter the input file name: ");
+                filename = scan.nextLine();
+                pB = readFile(filename);
+                if (pB == null)
+                    System.out.println("No changes were made to the phonebook");
+                else
+                    System.out.println("The phonebook was successfully read from the file!");
+                return;
+
+            case 2: // Add or change an entry in the directory
+                System.out.print("Enter the name: ");
+                name = scan.nextLine();
+                System.out.print("Enter the number: ");
+                number = scan.nextLine();
+
+                dE = phoneBook.addOrChangeEntry(name, number);
+                if (dE == null)
+                    System.out.println("New entry added!");
+                else
+                    System.out.printf("Existing entry [%s] was overwritten.\n", dE.toString());
+                return;
+
+            case 3: // Remove an entry by name
+                System.out.print("Enter the name: ");
+                name = scan.nextLine();
+                dE = phoneBook.removeEntry(name);
+                if (dE == null)
+                    System.out.println("No entry found with the name " + name);
+                else
+                    System.out.printf("The entry [%s] was removed.\n", dE.toString());
+                return;
+                
+            case 4: // Search for a entry by name
+                System.out.print("Enter the name: ");
+                name = scan.nextLine();
+                dE = phoneBook.searchEntry(name);
+                
+                if (dE != null)
+                    System.out.printf("An entry was found <%s>\n", dE.toString());
+                else
+                    System.out.printf("No entry with the name (%s) was found.\n", name);
+                return;
+
+            case 5: // Display all directory entries
+                phoneBook.displayAllEntries();
+                return;
+
+            case 6: // Save the phonebook to a file
+                try {
+                    System.out.print("Enter the filename: ");
+                    filename = scan.nextLine();
+                    PrintWriter writer = new PrintWriter(new FileWriter(filename));
+                    writer.print(phoneBook.toString());
+                    writer.close();
+                }
+                catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
+                return;
         }
     }
 
@@ -133,22 +165,24 @@ class proj3 {
      */
     public static PhoneDirectory readFile(String filename) {
         try {
-            PhoneDirectory pD = new PhoneDirectory("", "");
+            PhoneDirectory pD = new PhoneDirectory("name", "number");
             // Open the input file and split it into tokens
             Scanner reader = new Scanner(new File(filename));
             while (reader.hasNextLine()) {
-                StringTokenizer tokenizer = new StringTokenizer(reader.nextLine(), ",");
+                StringTokenizer tokenizer = new StringTokenizer(reader.nextLine(), ", ");
                 if (tokenizer.countTokens() == 2)
                     pD.addOrChangeEntry(tokenizer.nextToken(), tokenizer.nextToken());
                 else
                     throw new InputMismatchException("Invalid phonebook formatting.");
             }
+            return pD;
         }
         catch (FileNotFoundException ex) {
             System.out.println(ex.getMessage());
         }
         catch (InputMismatchException ex) {
             System.out.println(ex.getMessage());
+            System.out.println("Format for the input file should be name, number");
         }
         return null;
     }
