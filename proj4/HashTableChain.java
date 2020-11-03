@@ -23,17 +23,20 @@ public class HashTableChain<K, V> implements KWHashMap<K, V> {
     
     private LinkedList<Entry<K, V>>[] table;
     private int numKeys;
+    private int index;
     private static final int CAPACITY = 63;
     private static final double LOAD_THRESHOLD = 5; // average size of linked list (should be less than 5?)
     
     public HashTableChain() {
-        table = new LinkedList<Entry<K, V>>[CAPACITY];
+        table = new LinkedList[CAPACITY];
         numKeys = 0;
+        index = 65;
     }
 
     public HashTableChain(int cap) {
         table = new LinkedList[cap];
         numKeys = 0;
+        index = 65;
     }
 
     @Override
@@ -54,6 +57,7 @@ public class HashTableChain<K, V> implements KWHashMap<K, V> {
         // TODO Auto-generated method stub
         return false;
     }
+
 
     @Override
     public V put(K key, V value) {
