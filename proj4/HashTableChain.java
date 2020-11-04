@@ -22,21 +22,19 @@ public class HashTableChain<K, V> implements KWHashMap<K, V> {
     }
     
     private LinkedList<Entry<K, V>>[] table;
-    private int numKeys;
-    private int index;
+    private static int numKeys = 0;
+    private static int symbol = 65;
     private static final int CAPACITY = 63;
-    private static final double LOAD_THRESHOLD = 5; // average size of linked list (should be less than 5?)
+    private static final double LOAD_THRESHOLD = 0; // average size of linked list (should be less than 5?)
     
+    @SuppressWarnings("unchecked") 
     public HashTableChain() {
         table = new LinkedList[CAPACITY];
-        numKeys = 0;
-        index = 65;
     }
 
+    @SuppressWarnings("unchecked") 
     public HashTableChain(int cap) {
         table = new LinkedList[cap];
-        numKeys = 0;
-        index = 65;
     }
 
     @Override
