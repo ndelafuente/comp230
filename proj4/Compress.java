@@ -16,7 +16,6 @@ public class Compress {
                 try {
                     // Open the file specified at the command line
                     FileInputStream file = new FileInputStream(fileName);
-                    
 
                     // Create the compressed file to be written to
                     String compressedFileName = fileName + ".zzz";
@@ -42,7 +41,7 @@ public class Compress {
                     char c = 0;
                     int symbol = 128;
                     while ((c = (char) file.read()) != END_OF_FILE) {
-                        //System.out.printf("p + c: %s %c, %d\t c: %d\n", p , c, hashTable.get(p + c), hashTable.get(c));
+                        System.out.printf("p + c: %s %c, %d\t c: %d\n", p , c, hashTable.get(p + c), hashTable.get("" + c));
                         
                         // Find the longest prefix that is in the hash table
                         if (hashTable.get(p + c) != null) {
@@ -73,11 +72,13 @@ public class Compress {
                     logFile.printf("The dictionary contains %d total entries\n", hashTable.size());
                     logFile.printf("The table was rehashed %d times", hashTable.rehashCount);
                     logFile.close();
-                    break;
+
+                    if (!runAgain()) { break; }
+
                 } catch (FileNotFoundException e) {
                     System.out.println(e.getMessage());
                     Scanner scan = new Scanner(System.in);
-                    System.out.println("Please enter a correct file name: " );
+                    System.out.print("Please enter a correct file name: " );
                     fileName = scan.nextLine();
                     scan.close();
                     continue;
@@ -89,5 +90,24 @@ public class Compress {
             else {
                 System.out.println("Usage: java Compress <filename>");
         }
+    }
+    
+    /**
+     * Asks the user if they want to run the program again
+     * 
+     * @return true if they do, false if they do not
+     */
+    public static boolean runAgain() {
+        Scanner scan = new Scanner(System.in);
+		System.out.print("Do you want to run the program again (y/n): ");
+        String runProgram = scan.nextLine();
+        while ( !runProgram.equalsIgnoreCase("y") && !runProgram.equalsIgnoreCase("n") )
+        {
+			System.out.println("Invalid input.");
+            System.out.print("Do you want to run the program again (y/n): ");
+            runProgram =  scan.nextLine();
+        }
+
+        return runProgram.equalsIgnoreCase("y");
     }
 }
