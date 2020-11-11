@@ -25,7 +25,7 @@ public class HashTableChain<K, V> implements KWHashMap<K, V> {
     private double loadFactor = 0;
     private int capacity = 257, numKeys = 0, numEntries = 0;
     public int rehashCount = 0;
-    private static final double LOAD_THRESHOLD = .2; // average size of linked list (should be less than 5?)
+    private static final int LOAD_THRESHOLD = 5; // average size of linked list (should be less than 5?)
     
     @SuppressWarnings({"unchecked", "rawtypes"})
     public HashTableChain() {
@@ -80,7 +80,7 @@ public class HashTableChain<K, V> implements KWHashMap<K, V> {
         }
         
         // Update the load factor
-        loadFactor = numKeys / numEntries;
+        loadFactor = numEntries / numKeys;
         if (loadFactor > LOAD_THRESHOLD) {
             rehash();
         }
@@ -169,11 +169,13 @@ public class HashTableChain<K, V> implements KWHashMap<K, V> {
     public String toString() {
         String retStr = "";
         for (int i = 0; i < capacity; i++) {
-            retStr += i + ": ";
-            for (Entry<K,V> nextItem : table[i]) {
-                retStr += "(" + nextItem.getKey() + ", " + nextItem.getValue() + ") ";
+            if (table[i] != null) {
+                retStr += i + ": ";
+                for (Entry<K,V> nextItem : table[i]) {
+                    retStr += "(" + nextItem.getKey() + ", " + nextItem.getValue() + ") ";
+                }
+                retStr += '\n';
             }
-            retStr += '\n';
         }
         return retStr;
     }

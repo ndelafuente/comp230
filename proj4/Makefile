@@ -12,5 +12,5 @@ Decompress: Decompress.java
 	$(CC) $(CFLAGS) $^
 
 clean:
-	$(RM) *.class *.zzz *.zzz.log
+	$(RM) *.class *.zzz *.log
 
