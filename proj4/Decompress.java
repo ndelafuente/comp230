@@ -1,12 +1,14 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class Decompress {
+    private static final int END_OF_FILE = 0xFFFF;
+
     public static void main(String[] args) {
-        private static int END_OF_FILE = 0xFFFF;
         if (args.length == 1) {
             while (true) {
                 try {
@@ -35,26 +37,24 @@ public class Decompress {
                     // Read each character from the files
                     long startTime = System.currentTimeMillis();
                     String q = "";
-                    char p = (char) file.read();
-                    if (hashTable.get(c) != null) {
-                        decompressedFile.print(c);
-                    }
-                    else {
+                    char p = (char) compressedFile.read();
+                    if (hashTable.get(p) != null) {
+                        decompressedFile.print(hashTable.get(p));
+                    } else {
                         System.out.println("Invalid file format");
                         continue;
                     }
                     int symbol = 128;
-                    while ((c = (char) file.read()) != END_OF_FILE) {
+                    while ((p = (char) compressedFile.read()) != END_OF_FILE) {
                         if (hashTable.get(p) != null) {
                             String textP = hashTable.get(p);
                             decompressedFile.print(textP);
                             symbol++;
                             hashTable.put(symbol, hashTable.get(q) + textP.charAt(0));
-                        }
-                        else {
+                        } else {
                             String textQ = hashTable.get(q);
                             decompressedFile.print(textQ + textQ.charAt(0));
-                            hashTable.put((int)p, textQ + textQ.charAt(0));
+                            hashTable.put((int) p, textQ + textQ.charAt(0));
                         }
                     }
                     double runTime = (System.currentTimeMillis() - startTime) / 1000;
@@ -64,9 +64,13 @@ public class Decompress {
                     logFile.printf("The table was doubled %d times", hashTable.rehashCount);
                     logFile.close();
 
-                    if (!runAgain()) { break; }
+                    if (!runAgain()) {
+                        break;
+                    }
 
                 } catch (FileNotFoundException e) {
+                    System.out.println(e.getMessage());
+                } catch (IOException e) {
                     System.out.println(e.getMessage());
                 }
             }

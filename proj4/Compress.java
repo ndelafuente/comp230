@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class Compress {
-    private static int END_OF_FILE = 0xFFFF;
+    private static final int END_OF_FILE = 0xFFFF;
     public static void main(String[] args) {
         if (args.length == 1) {
             String fileName = args[0];
