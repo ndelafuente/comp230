@@ -22,17 +22,16 @@ public class HashTableChain<K, V> implements KWHashMap<K, V> {
     }
     
     private LinkedList<Entry<K, V>>[] table;
-    private static int numKeys = 0;
-    private static int symbol = 65;
-    private static final int CAPACITY = 63;
-    private static final double LOAD_THRESHOLD = 0; // average size of linked list (should be less than 5?)
+    private double loadFactor = 0;
+    private int capacity = 127, numKeys = 0, numEntries = 0;
+    private static final double LOAD_THRESHOLD = .2; // average size of linked list (should be less than 5?)
     
-    @SuppressWarnings("unchecked") 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public HashTableChain() {
-        table = new LinkedList[CAPACITY];
+        table = new LinkedList[capacity];
     }
 
-    @SuppressWarnings("unchecked") 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public HashTableChain(int cap) {
         table = new LinkedList[cap];
     }
@@ -52,10 +51,8 @@ public class HashTableChain<K, V> implements KWHashMap<K, V> {
 
     @Override
     public boolean isEmpty() {
-        // TODO Auto-generated method stub
-        return false;
+        return numKeys == 0;
     }
-
 
     @Override
     public V put(K key, V value) {
@@ -63,23 +60,31 @@ public class HashTableChain<K, V> implements KWHashMap<K, V> {
         if (index < 0) 
             index += table.length;
 
-        if (table[index] == null)
+        if (table[index] == null) {
             table[index] = new LinkedList<Entry<K, V>>();
+            numKeys++;
+        }
         
+        V oldValue = null;
         for (Entry<K,V> nextItem : table[index]) {
             if (nextItem.getKey().equals(key)) {
-                V oldValue = nextItem.getValue();
+                oldValue = nextItem.getValue();
                 nextItem.setValue(value);
-                return oldValue;
+                break;
             }
         }
-
-        table[index].add(new Entry<K, V>(key, value));
-        numKeys++;
+        if (oldValue == null) {
+            table[index].add(new Entry<K, V>(key, value));
+            numEntries++;
+        }
         
-        // TODO if the load factor exceeds the LOAD_THRESHOLD,  Rehash.
+        // Update the load factor
+        loadFactor = numKeys / numEntries;
+        if (loadFactor > LOAD_THRESHOLD) {
+            rehash();
+        }
 
-        return null;
+        return oldValue;
     }
 
     @Override
@@ -90,13 +95,13 @@ public class HashTableChain<K, V> implements KWHashMap<K, V> {
         if (table[index] == null)
             return null;
         
-        
         for (Entry<K,V> nextItem : table[index]) {
             if(nextItem.getKey().equals(key)) {
                 table[index].remove(nextItem);
-                numKeys--;
+                numEntries--;
                 if (table[index].isEmpty()) {
                     table[index] = null;
+                    numKeys--;
                 }
                 return nextItem.getValue();
             }
@@ -105,9 +110,69 @@ public class HashTableChain<K, V> implements KWHashMap<K, V> {
         return null;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private void rehash() {
+        capacity = capacity * 2 + 1;
+        while (!isPrime(capacity)) {
+            capacity++;
+        }
+        
+        LinkedList<Entry<K, V>>[] newTable = new LinkedList[capacity];
+
+        numKeys = 0;
+        for (int i = 0; i < capacity; i++) {
+            if (this.get(i) != null) {
+                for (Entry<K,V> nextItem : table[i]) {
+                    K key = nextItem.getKey();
+                    V value = nextItem.getValue();
+
+                    int index = key.hashCode() % newTable.length;
+                    if (index < 0) 
+                        index += newTable.length;
+
+                    if (newTable[index] == null) {
+                        newTable[index] = new LinkedList<Entry<K, V>>();
+                        numKeys++;
+                    }
+
+                    newTable[index].add(new Entry<K, V>(key, value));
+                }
+            }
+        }
+
+        table = newTable;
+    }
+    
+    private static boolean isPrime(int n) { 
+        // Corner cases 
+        if (n <= 1) return false; 
+        if (n <= 3) return true; 
+      
+        // Check whether n is divisible by 2 or 3
+        if (n % 2 == 0 || n % 3 == 0) return false; 
+      
+        // Check every 6th number up to sqrt(n)
+        for (int i = 5; i * i <= n; i += 6) 
+            if (n % i == 0 || n % (i + 2) == 0) 
+            return false; 
+      
+        return true; 
+    } 
+
     @Override
     public int size() {
-        // TODO Auto-generated method stub
-        return numKeys;
+        return numEntries;
+    }
+
+    public String toString() {
+        String retStr = "";
+        for (int i = 0; i < capacity; i++) {
+            retStr += i + ": ";
+            for (Entry<K,V> nextItem : table[i]) {
+                retStr += "(" + nextItem.getKey() + ", " + nextItem.getValue() + ") ";
+            }
+            retStr += '\n';
+        }
+        return retStr;
     }
 }
