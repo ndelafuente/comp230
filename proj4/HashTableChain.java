@@ -23,7 +23,8 @@ public class HashTableChain<K, V> implements KWHashMap<K, V> {
     
     private LinkedList<Entry<K, V>>[] table;
     private double loadFactor = 0;
-    private int capacity = 127, numKeys = 0, numEntries = 0;
+    private int capacity = 257, numKeys = 0, numEntries = 0;
+    public int rehashCount = 0;
     private static final double LOAD_THRESHOLD = .2; // average size of linked list (should be less than 5?)
     
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -141,6 +142,7 @@ public class HashTableChain<K, V> implements KWHashMap<K, V> {
         }
 
         table = newTable;
+        rehashCount++;
     }
     
     private static boolean isPrime(int n) { 

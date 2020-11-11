@@ -34,7 +34,7 @@ public class Compress {
                 //System.out.println(hashTable.toString());
 
                 // Read each character from the files
-                long startTime = System.currentTimeMillis(), rehashCount = 0;
+                long startTime = System.currentTimeMillis();
                 String p = "";
                 char c = 0;
                 int symbol = 128;
@@ -68,7 +68,7 @@ public class Compress {
                 logFile.printf("Compressed from %dkb to %dkb\n", fileSize, compressedSize);
                 logFile.printf("Compression took %f seconds\n", runTime);
                 logFile.printf("The dictionary contains %d total entries\n", hashTable.size());
-                logFile.printf("The table was rehashed %d times", rehashCount);
+                logFile.printf("The table was rehashed %d times", hashTable.rehashCount);
                 logFile.close();
 
             } catch (FileNotFoundException e) {
